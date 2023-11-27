@@ -1,7 +1,14 @@
+## Requirements
+* NodeJS (>=18.18.2)
+
 ## Installation
 
 ```bash
+# install dependencies
 $ yarn install
+
+# copy .env file
+$ cp .env .env.local 
 ```
 
 ## Running the app
