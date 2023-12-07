@@ -8,7 +8,7 @@
 $ yarn install
 
 # copy .env file
-$ cp .env .env.local 
+$ cp .env.dist .env 
 ```
 
 ## Running the app
