@@ -1,9 +1,4 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BeforeInsert, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { validate, v4 } from 'uuid';
 import { Exclude } from 'class-transformer';
 
@@ -15,10 +10,10 @@ export abstract class BaseEntity {
   @Column({ type: 'uuid', unique: true })
   uuid: string;
 
-  @Column({ name: 'created_at' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ name: 'updated_at', nullable: true })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @BeforeInsert()
@@ -26,12 +21,5 @@ export abstract class BaseEntity {
     if (validate(this.uuid) !== true) {
       this.uuid = v4();
     }
-
-    this.createdAt = new Date();
-  }
-
-  @BeforeUpdate()
-  update() {
-    this.updatedAt = new Date();
   }
 }

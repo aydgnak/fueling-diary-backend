@@ -1,41 +1,26 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
   async findAll() {
     return await this.userRepository.find();
   }
 
   async findOne(uuid: string) {
-    const findOneOptions: FindOneOptions = { where: { uuid } };
-
-    return await this.userRepository.findOne(findOneOptions);
+    return await this.userRepository.findOne({ where: { uuid } });
   }
 
   async create(createUserDto: CreateUserDto) {
-    const findOneOptions: FindOneOptions = {
-      where: {
-        username: createUserDto.username,
-      },
-    };
-
-    const user = await this.userRepository.findOne(findOneOptions);
-
+    const user = await this.userRepository.findOne({ where: { username: createUserDto.username } });
     if (user) {
-      throw new BadRequestException('User already exists');
+      return user;
     }
 
     const newUser = this.userRepository.create(createUserDto);
@@ -52,11 +37,14 @@ export class UserService {
   }
 
   async remove(uuid: string) {
-    await this.check(uuid);
+    const user = await this.check(uuid);
 
-    await this.userRepository.delete({ uuid });
+    await this.userRepository.remove(user);
 
-    return { deleted: true };
+    return {
+      deleted: true,
+      user: user,
+    };
   }
 
   async check(uuid: string) {

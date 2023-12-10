@@ -1,23 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { plainToInstance } from 'class-transformer';
 
-@UseInterceptors(ClassSerializerInterceptor)
-@UsePipes(ValidationPipe)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -34,19 +19,11 @@ export class UserController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    createUserDto = plainToInstance(CreateUserDto, createUserDto, {
-      excludeExtraneousValues: true,
-    });
-
     return this.userService.create(createUserDto);
   }
 
   @Patch(':uuid')
   update(@Param('uuid') uuid: string, @Body() updateUserDto: UpdateUserDto) {
-    updateUserDto = plainToInstance(UpdateUserDto, updateUserDto, {
-      excludeExtraneousValues: true,
-    });
-
     return this.userService.update(uuid, updateUserDto);
   }
 
