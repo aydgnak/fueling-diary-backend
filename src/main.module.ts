@@ -10,7 +10,7 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
   controllers: [],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
-    { provide: APP_PIPE, useClass: ValidationPipe },
+    { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true, transform: true }) },
   ],
   exports: [],
 })

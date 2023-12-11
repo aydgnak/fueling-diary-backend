@@ -1,6 +1,7 @@
-import { BeforeInsert, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { validate, v4 } from 'uuid';
 import { Exclude } from 'class-transformer';
+import { DateTime } from 'luxon';
 
 export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
@@ -10,16 +11,23 @@ export abstract class BaseEntity {
   @Column({ type: 'uuid', unique: true })
   uuid: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: 'varchar', length: 50 })
+  createdAt: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  updatedAt: string;
 
   @BeforeInsert()
-  create() {
+  private create() {
     if (validate(this.uuid) !== true) {
       this.uuid = v4();
     }
+
+    this.createdAt = DateTime.utc().toISO();
+  }
+
+  @BeforeUpdate()
+  private update() {
+    this.updatedAt = DateTime.utc().toISO();
   }
 }

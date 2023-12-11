@@ -29,11 +29,11 @@ export class UserService {
   }
 
   async update(uuid: string, updateUserDto: UpdateUserDto) {
-    await this.check(uuid);
+    const user = await this.check(uuid);
 
-    await this.userRepository.update({ uuid }, updateUserDto);
+    Object.assign(user, updateUserDto);
 
-    return await this.findOne(uuid);
+    return await this.userRepository.save(user);
   }
 
   async remove(uuid: string) {
