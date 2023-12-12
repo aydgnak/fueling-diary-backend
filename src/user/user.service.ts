@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -17,11 +18,17 @@ export class UserService {
     return await this.userRepository.findOne({ where: { uuid } });
   }
 
+  async findOneByUsername(username: string) {
+    return await this.userRepository.findOne({ where: { username } });
+  }
+
   async create(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.findOne({ where: { username: createUserDto.username } });
+    const user = await this.findOneByUsername(createUserDto.username);
     if (user) {
       return user;
     }
+
+    createUserDto.password = this.hashPassword(createUserDto.password);
 
     const newUser = this.userRepository.create(createUserDto);
 
@@ -30,6 +37,11 @@ export class UserService {
 
   async update(uuid: string, updateUserDto: UpdateUserDto) {
     const user = await this.check(uuid);
+
+    const password = updateUserDto.password;
+    if (password) {
+      updateUserDto.password = this.hashPassword(password);
+    }
 
     Object.assign(user, updateUserDto);
 
@@ -47,7 +59,7 @@ export class UserService {
     };
   }
 
-  async check(uuid: string) {
+  private async check(uuid: string) {
     const user = await this.findOne(uuid);
 
     if (!user) {
@@ -55,5 +67,9 @@ export class UserService {
     }
 
     return user;
+  }
+
+  private hashPassword(password: string) {
+    return hashSync(password, 10);
   }
 }
