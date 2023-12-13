@@ -1,5 +1,7 @@
 ## Requirements
-* NodeJS (>=18.18.2)
+* [NodeJS](https://nodejs.org/en/download) (>=18.18.2)
+* [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
+* [Docker](https://docs.docker.com/desktop/install/mac-install)
 
 ## Installation
 
@@ -9,6 +11,12 @@ $ yarn install
 
 # copy .env file
 $ cp .env.dist .env 
+
+# For database (Optional)
+$ docker compose up -d
+
+# Run migrations
+$ yarn run migrate:run
 ```
 
 ## Running the app
