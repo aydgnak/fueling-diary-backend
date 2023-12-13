@@ -1,7 +1,7 @@
 ## Requirements
 
 * [NodeJS](https://nodejs.org/en/download) (>=18.18.2)
-* [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable).
+* [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 * [Docker](https://docs.docker.com/desktop/install/mac-install) (optional)
 
 ## Installation
