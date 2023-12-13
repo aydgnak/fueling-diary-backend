@@ -1,7 +1,8 @@
 ## Requirements
+
 * [NodeJS](https://nodejs.org/en/download) (>=18.18.2)
-* [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
-* [Docker](https://docs.docker.com/desktop/install/mac-install)
+* [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable).
+* [Docker](https://docs.docker.com/desktop/install/mac-install) (optional)
 
 ## Installation
 
@@ -31,9 +32,5 @@ $ yarn run start:dev
 # production mode
 $ yarn run start:prod
 ```
-
-## Stay in touch
-
-- Author - [Aydoğan Ak](https://github.com/aydgnak)
 
 Coded with [NestJS](https://nestjs.com)
