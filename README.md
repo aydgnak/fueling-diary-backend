@@ -12,10 +12,10 @@ $ yarn install
 # copy .env file
 $ cp .env.dist .env 
 
-# For database (Optional)
+# for database (optional)
 $ docker compose up -d
 
-# Run migrations
+# run migrations
 $ yarn run migrate:run
 ```
 
