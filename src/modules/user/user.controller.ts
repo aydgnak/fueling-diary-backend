@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from '@modules/user/entities';
+import { Public } from '@modules/auth';
 
 @Controller('user')
 export class UserController {
@@ -17,6 +18,7 @@ export class UserController {
     return this.userService.findOne(uuid);
   }
 
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
