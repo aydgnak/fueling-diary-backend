@@ -9,19 +9,19 @@ import { hashSync } from 'bcrypt';
 export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
-  async findOne(uuid: string) {
+  async findOne(uuid: string): Promise<User> {
     return await this.userRepository.findOne({ where: { uuid } });
   }
 
-  async findOneByUsername(username: string) {
+  async findOneByUsername(username: string): Promise<User> {
     return await this.userRepository.findOne({ where: { username } });
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.findOneByUsername(createUserDto.username);
     if (user) {
       return user;
@@ -34,7 +34,7 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  async update(uuid: string, updateUserDto: UpdateUserDto) {
+  async update(uuid: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.check(uuid);
 
     const password = updateUserDto.password;
@@ -47,18 +47,15 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async remove(uuid: string) {
+  async remove(uuid: string): Promise<User> {
     const user = await this.check(uuid);
 
     await this.userRepository.remove(user);
 
-    return {
-      deleted: true,
-      user: user,
-    };
+    return user;
   }
 
-  private async check(uuid: string) {
+  private async check(uuid: string): Promise<User> {
     const user = await this.findOne(uuid);
 
     if (!user) {
@@ -68,7 +65,7 @@ export class UserService {
     return user;
   }
 
-  private hashPassword(password: string) {
+  private hashPassword(password: string): string {
     return hashSync(password, 10);
   }
 }

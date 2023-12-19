@@ -1,7 +1,8 @@
 import { ClassSerializerInterceptor, Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JWT_SECRET, MysqlDataSourceOptions } from '@config/index';
+import { MysqlDataSourceOptions } from '@config/database';
+import { JWT_SECRET } from '@config/environment';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule, AuthGuard } from '@modules/auth';
